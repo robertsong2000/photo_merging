@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>团队合照拼接器</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="stage-panel" aria-label="照片合成画布">
+        <div class="brand-strip">
+          <div>
+            <p class="eyebrow">Group Photo Composer</p>
+            <h1>团队合照拼接器</h1>
+          </div>
+          <button class="primary-action" id="downloadBtn" type="button" disabled>下载 PNG</button>
+        </div>
+
+        <div class="canvas-frame">
+          <canvas id="mergeCanvas" width="1200" height="800" aria-label="合成预览"></canvas>
+          <div class="empty-state" id="emptyState">
+            <span>上传合照后开始拼接</span>
+          </div>
+        </div>
+      </section>
+
+      <aside class="control-panel" aria-label="编辑控制">
+        <section class="panel-section upload-section">
+          <label class="upload-zone" for="photoInput">
+            <input id="photoInput" type="file" accept="image/*" multiple />
+            <span class="upload-icon">+</span>
+            <strong>添加团队合照</strong>
+            <small>支持多选，可拖动缩略图调整顺序</small>
+          </label>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-title">
+            <h2>拼接方式</h2>
+          </div>
+          <div class="segmented" role="radiogroup" aria-label="拼接方式">
+            <button class="segment" type="button" data-layout="horizontal">横向</button>
+            <button class="segment" type="button" data-layout="vertical">纵向</button>
+            <button class="segment active" type="button" data-layout="pin">品字型</button>
+            <button class="segment" type="button" data-layout="grid">网格</button>
+          </div>
+          <label class="field">
+            <span>画布比例</span>
+            <select id="ratioSelect">
+              <option value="wide">横版 3:2</option>
+              <option value="square">方形 1:1</option>
+              <option value="poster">海报 4:5</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>图片显示</span>
+            <select id="fitSelect">
+              <option value="contain">完整显示，不裁切</option>
+              <option value="cover">铺满格子，允许裁切</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>图片间距</span>
+            <input id="gapInput" type="range" min="0" max="44" value="12" />
+          </label>
+          <label class="field">
+            <span>品字上图高度 <output id="pinHeightValue">52%</output></span>
+            <input id="pinHeightInput" type="range" min="42" max="66" value="52" />
+          </label>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-title with-action">
+            <h2>合照顺序</h2>
+            <button class="ghost-action" id="clearPhotosBtn" type="button" disabled>清空</button>
+          </div>
+          <div class="thumb-list" id="thumbList" aria-live="polite"></div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-title with-action">
+            <h2>照片微调</h2>
+            <button class="ghost-action" id="resetPhotoBtn" type="button" disabled>重置</button>
+          </div>
+          <p class="selected-photo" id="selectedPhotoLabel">先点击一张缩略图</p>
+          <label class="field">
+            <span>缩放 <output id="photoScaleValue">100%</output></span>
+            <input id="photoScaleInput" type="range" min="50" max="180" value="100" disabled />
+          </label>
+          <label class="field">
+            <span>左右位置 <output id="photoOffsetXValue">0</output></span>
+            <input id="photoOffsetXInput" type="range" min="-100" max="100" value="0" disabled />
+          </label>
+          <label class="field">
+            <span>上下位置 <output id="photoOffsetYValue">0</output></span>
+            <input id="photoOffsetYInput" type="range" min="-100" max="100" value="0" disabled />
+          </label>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-title with-action">
+            <h2>文字</h2>
+            <div class="button-row">
+              <button class="ghost-action" id="addTextBtn" type="button">添加</button>
+              <button class="ghost-action danger-action" id="deleteTextBtn" type="button">删除</button>
+            </div>
+          </div>
+          <label class="field">
+            <span>内容</span>
+            <input id="textContent" type="text" value="我们在一起，就是完整的团队" />
+          </label>
+          <div class="field-grid">
+            <label class="field">
+              <span>字号</span>
+              <input id="fontSize" type="number" min="24" max="140" value="54" />
+            </label>
+            <label class="field">
+              <span>颜色</span>
+              <input id="textColor" type="color" value="#fff7de" />
+            </label>
+          </div>
+          <label class="field">
+            <span>文字背景</span>
+            <input id="textBg" type="color" value="#17212b" />
+          </label>
+          <p class="hint">点击画布上的文字可选中，拖动可调整位置。</p>
+        </section>
+      </aside>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
